@@ -44,8 +44,8 @@ async def test_windsurf_wave11():
         
     except Exception as e:
         print(f"Error during testing: {e}")
-        print("\nTroubleshooting tips:")
-        print("1. Make sure you have installed all dependencies: pip install -r requirements.txt")
+        print("\nTo get started:")
+        print("1. Make sure you have installed all dependencies: pip install -r ../requirements.txt")
         print("2. Install Playwright browsers: playwright install")
         print("3. Check your Google API key is valid")
 

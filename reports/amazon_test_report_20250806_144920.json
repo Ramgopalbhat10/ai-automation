@@ -1,0 +1,205 @@
+{
+  "export_time": "2025-08-06T14:49:20.650222",
+  "results": [
+    {
+      "test_name": "Homepage Load and Navigation",
+      "status": "failed",
+      "start_time": "2025-08-06T14:45:09.865344",
+      "end_time": "2025-08-06T14:45:48.584213",
+      "duration": 38.718869,
+      "output": "",
+      "error_message": "Test timed out after 30 seconds",
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "smoke",
+          "navigation",
+          "homepage"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Product Search Functionality",
+      "status": "passed",
+      "start_time": "2025-08-06T14:45:48.584213",
+      "end_time": "2025-08-06T14:46:22.105189",
+      "duration": 33.520976,
+      "output": "AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Navigated to https://www.amazon.com', extracted_content='🔗 Navigated to https://www.amazon.com', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory=\"Input 'wireless headphones' into element 6.\", extracted_content='⌨️  Input wireless headphones into index 6', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Something new appeared after action 1 / 2, following actions are NOT executed and should be retried.', extracted_content='Something new appeared after action 1 / 2, following actions are NOT executed and should be retried.', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory=\"Input 'wireless headphones' into element 6.\", extracted_content='⌨️  Input wireless headphones into index 6', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Clicked button with index 7: ', extracted_content='Clicked button with index 7: ', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=True, success=True, error=None, attachments=[], long_term_memory=\"Task completed: True - Successfully searched for 'wireless headphones' on Amazon.com and verified that the search results s - 40 more characters\", extracted_content=\"Successfully searched for 'wireless headphones' on Amazon.com and verified that the search results show various wireless headphone products.\", include_extracted_content_only_once=False, include_in_memory=False)], all_model_outputs=[{'go_to_url': {'url': 'https://www.amazon.com', 'new_tab': False}, 'interacted_element': None}, {'input_text': {'index': 6, 'text': 'wireless headphones'}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[2]/div[1]/input', highlight_index=6, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'input'], attributes={'type': 'text', 'id': 'twotabsearchtextbox', 'value': '', 'name': 'field-keywords', 'autocomplete': 'off', 'placeholder': 'Search Amazon', 'class': 'nav-input nav-progressive-attribute', 'dir': 'auto', 'tabindex': '0', 'aria-label': 'Search Amazon', 'role': 'searchbox', 'aria-autocomplete': 'list', 'aria-controls': 'sac-autocomplete-results-container', 'aria-expanded': 'false', 'aria-haspopup': 'grid', 'spellcheck': 'false'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(2) > div:nth-of-type(1) > input.nav-input.nav-progressive-attribute[type=\"text\"][id=\"twotabsearchtextbox\"][name=\"field-keywords\"][autocomplete=\"off\"][placeholder=\"Search Amazon\"][aria-label=\"Search Amazon\"][role=\"searchbox\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'click_element_by_index': {'index': 7}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[3]/div/span/input', highlight_index=7, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'span', 'input'], attributes={'id': 'nav-search-submit-button', 'type': 'submit', 'class': 'nav-input nav-progressive-attribute', 'value': 'Go', 'tabindex': '0'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(3) > div > span > input.nav-input.nav-progressive-attribute[id=\"nav-search-submit-button\"][type=\"submit\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'input_text': {'index': 6, 'text': 'wireless headphones'}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[2]/div[1]/input', highlight_index=6, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'input'], attributes={'type': 'text', 'id': 'twotabsearchtextbox', 'value': '', 'name': 'field-keywords', 'autocomplete': 'off', 'placeholder': 'Search Amazon', 'class': 'nav-input nav-progressive-attribute', 'dir': 'auto', 'tabindex': '0', 'aria-label': 'Search Amazon', 'role': 'searchbox', 'aria-autocomplete': 'list', 'aria-controls': 'sac-autocomplete-results-container', 'aria-expanded': 'true', 'aria-haspopup': 'grid', 'spellcheck': 'false'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(2) > div:nth-of-type(1) > input.nav-input.nav-progressive-attribute[type=\"text\"][id=\"twotabsearchtextbox\"][name=\"field-keywords\"][autocomplete=\"off\"][placeholder=\"Search Amazon\"][aria-label=\"Search Amazon\"][role=\"searchbox\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'click_element_by_index': {'index': 7}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[3]/div/span/input', highlight_index=7, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'span', 'input'], attributes={'id': 'nav-search-submit-button', 'type': 'submit', 'class': 'nav-input nav-progressive-attribute', 'value': 'Go', 'tabindex': '0'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(3) > div > span > input.nav-input.nav-progressive-attribute[id=\"nav-search-submit-button\"][type=\"submit\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'done': {'text': \"Successfully searched for 'wireless headphones' on Amazon.com and verified that the search results show various wireless headphone products.\", 'success': True, 'files_to_display': []}, 'interacted_element': None}])",
+      "error_message": null,
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "search",
+          "products",
+          "core"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Product Detail Page",
+      "status": "failed",
+      "start_time": "2025-08-06T14:46:22.105189",
+      "end_time": "2025-08-06T14:47:26.140147",
+      "duration": 64.034958,
+      "output": "",
+      "error_message": "Test timed out after 60 seconds",
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "products",
+          "details",
+          "core"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Add to Cart (Guest)",
+      "status": "failed",
+      "start_time": "2025-08-06T14:47:26.140147",
+      "end_time": "2025-08-06T14:48:15.742958",
+      "duration": 49.602811,
+      "output": "",
+      "error_message": "Test timed out after 45 seconds",
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "cart",
+          "guest",
+          "critical"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Shopping Cart Management",
+      "status": "failed",
+      "start_time": "2025-08-06T14:48:15.744052",
+      "end_time": "2025-08-06T14:49:20.649223",
+      "duration": 64.905171,
+      "output": "",
+      "error_message": "Test timed out after 60 seconds",
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "cart",
+          "management"
+        ],
+        "retry_count": 0
+      }
+    }
+  ],
+  "summary": {
+    "suite_name": "Export",
+    "execution_time": "2025-08-06T14:49:20.650222",
+    "total_duration": 250.78278500000002,
+    "statistics": {
+      "total_tests": 5,
+      "passed": 1,
+      "failed": 4,
+      "errors": 0,
+      "skipped": 0,
+      "success_rate": 20.0,
+      "average_duration": 50.16
+    },
+    "performance": {
+      "slowest_test": {
+        "name": "Shopping Cart Management",
+        "duration": 64.905171
+      },
+      "fastest_test": {
+        "name": "Product Search Functionality",
+        "duration": 33.520976
+      }
+    },
+    "failed_tests": [
+      {
+        "name": "Homepage Load and Navigation",
+        "error": "Test timed out after 30 seconds",
+        "duration": 38.718869
+      },
+      {
+        "name": "Product Detail Page",
+        "error": "Test timed out after 60 seconds",
+        "duration": 64.034958
+      },
+      {
+        "name": "Add to Cart (Guest)",
+        "error": "Test timed out after 45 seconds",
+        "duration": 49.602811
+      },
+      {
+        "name": "Shopping Cart Management",
+        "error": "Test timed out after 60 seconds",
+        "duration": 64.905171
+      }
+    ]
+  }
+}
