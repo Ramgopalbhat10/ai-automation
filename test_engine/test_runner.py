@@ -157,15 +157,12 @@ class TestRunner:
                 # Configure agent settings
                 agent_config = {
                     "use_vision": self.config.get("agent.use_vision", True),
-                    "max_steps": test_case.timeout or self.config.get("agent.max_steps", 50),
+                    "max_steps": test_case.max_actions or self.config.get("agent.max_steps", 50),
                     "save_conversation_path": self.config.get("agent.save_conversation_path")
                 }
                 
-                # Add sensitive data if configured for this environment
-                if test_case.environment:
-                    sensitive_data = self._get_sensitive_data(test_case.environment)
-                    if sensitive_data:
-                        agent_config["sensitive_data"] = sensitive_data
+                # Note: Sensitive data handling can be added here if needed
+                # For now, we skip sensitive data configuration
                 
                 # Use test-specific LLM provider if available
                 integration_to_use = self.browser_use_integration

@@ -9,10 +9,10 @@ class OpenAIProvider(LLMProvider):
     
     def __init__(self, config: Config):
         super().__init__(config)
+        self.base_url = config.get("llm.openai.base_url") # For custom endpoints
         self.api_key = config.get("llm.openai.api_key") or os.getenv("OPENAI_API_KEY")
-        self.model_name = config.get("llm.openai.model", "gpt-4o")
+        self.model_name = config.get("llm.openai.model", "meta-llama/Llama-4-Scout-17B-16E-Instruct")
         self.temperature = config.get("llm.openai.temperature", 0.1)
-        self.base_url = config.get("llm.openai.base_url")  # For custom endpoints
         
     def get_llm(self):
         """Return ChatOpenAI instance compatible with browser-use Agent"""

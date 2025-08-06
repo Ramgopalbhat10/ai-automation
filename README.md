@@ -136,25 +136,46 @@ variables:
 
 ## 🚀 Usage
 
+### Universal CLI - No Separate Scripts Needed!
+
+The framework now includes a **universal CLI** that can run any YAML test suite without requiring separate Python scripts for each test suite. This solves the scalability issue!
+
 ### Running Tests
 ```bash
-# Run a specific test suite
-python -m ai_automation run test_suites/examples/example_test_suite.yaml
+# Run any test suite directly
+python main.py run test_suites/examples/example_test_suite.yaml
+python main.py run test_suites/production/mrgb_blog_test_suite.yaml
 
-# Run with specific environment
-python -m ai_automation run --env staging test_suites/production/
+# Run with configuration overrides
+python main.py run test_suites/examples/example_test_suite.yaml --parallel --workers 4
+python main.py run test_suites/production/mrgb_blog_test_suite.yaml --browser chrome --headless
 
-# Run in parallel
-python -m ai_automation run --parallel --workers 4 test_suites/
+# Use different LLM providers
+python main.py run test_suites/examples/example_test_suite.yaml --llm-provider openai
+python main.py run test_suites/examples/example_test_suite.yaml --llm-provider groq
 ```
 
-### Validating Configuration
+### Managing Test Suites
 ```bash
-# Validate YAML syntax and schema
-python -m ai_automation validate test_suites/examples/example_test_suite.yaml
+# List all available test suites
+python main.py list
 
-# Generate template
-python -m ai_automation template --output my_test_suite.yaml
+# Validate YAML syntax and schema
+python main.py validate test_suites/examples/example_test_suite.yaml
+
+# Generate template for new test suite
+python main.py template --output my_test_suite.yaml
+```
+
+### CLI Options
+```bash
+# Available run options:
+--parallel          # Force parallel execution
+--sequential        # Force sequential execution  
+--workers N         # Number of parallel workers
+--llm-provider X    # LLM provider (google, openai, groq)
+--browser X         # Browser (chrome, firefox, webkit, edge)
+--headless          # Run in headless mode
 ```
 
 ## 🧪 Testing the Framework

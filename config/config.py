@@ -33,6 +33,7 @@ class Config:
                 "provider": os.getenv("LLM_PROVIDER", "google"),
                 "google_api_key": os.getenv("GOOGLE_API_KEY"),
                 "openai_api_key": os.getenv("OPENAI_API_KEY"),
+                "openai_base_url": os.getenv("OPENAI_BASE_URL"),
                 "model": os.getenv("LLM_MODEL", "gemini-2.0-flash-exp"),
             },
             "browser": {

@@ -45,9 +45,10 @@ class TestCase:
     # Basic configuration
     description: str = ""
     url: str = ""
-    timeout: int = 60  # seconds
+    timeout: int = 120  # seconds (2 minutes)
     retry_count: int = 1
     tags: List[str] = field(default_factory=list)
+    environment: str = "production"  # Environment identifier (dev, staging, production)
     
     # Browser configuration
     browser: BrowserConfig = field(default_factory=BrowserConfig)

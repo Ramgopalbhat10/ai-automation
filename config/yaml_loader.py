@@ -154,9 +154,10 @@ class YAMLLoader:
             success_criteria=test_data.get('success_criteria', ''),
             description=test_data.get('description', ''),
             url=test_data.get('url', ''),
-            timeout=test_data.get('timeout', 60),
+            timeout=test_data.get('timeout', 120),
             retry_count=test_data.get('retry_count', 1),
             tags=test_data.get('tags', []),
+            environment=test_data.get('environment', 'production'),
 
             browser=browser,
             llm_provider=test_data.get('llm_provider', suite_data.get('default_llm_provider', 'google')),

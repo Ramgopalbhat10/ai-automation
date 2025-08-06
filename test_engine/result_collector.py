@@ -210,6 +210,106 @@ class ResultCollector:
         
         return file_path
     
+    def export_to_markdown(self, file_path: str) -> str:
+        """Export results to Markdown report
+        
+        Args:
+            file_path: Output file path
+            
+        Returns:
+            Path to exported file
+        """
+        # Generate summary
+        total_duration = sum(r.duration for r in self._results)
+        summary = self.generate_summary("Markdown Report", self._results, total_duration)
+        
+        # Create Markdown content
+        markdown_content = self._generate_markdown_report(summary, self._results)
+        
+        # Ensure directory exists
+        Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+        
+        # Write to file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(markdown_content)
+        
+        return file_path
+    
+    def _generate_markdown_report(self, summary: Dict[str, Any], results: List[TestResult]) -> str:
+        """Generate Markdown report content
+        
+        Args:
+            summary: Test summary data
+            results: List of test results
+            
+        Returns:
+            Markdown content string
+        """
+        stats = summary['statistics']
+        
+        markdown = f"""# BrowserTest AI - Test Report
+
+**Generated on:** {summary['execution_time']}  
+**Total Duration:** {summary['total_duration']:.2f} seconds
+
+## Summary Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | {stats['total_tests']} |
+| Passed | {stats['passed']} |
+| Failed | {stats['failed']} |
+| Errors | {stats['errors']} |
+| Skipped | {stats['skipped']} |
+| Success Rate | {stats['success_rate']:.1f}% |
+
+## Test Results
+
+"""
+        
+        for result in results:
+            status_emoji = {
+                'passed': '✅',
+                'failed': '❌',
+                'error': '⚠️',
+                'skipped': '⏭️'
+            }.get(result.status, '❓')
+            
+            markdown += f"""### {status_emoji} {result.test_name}
+
+**Status:** {result.status.upper()}  
+**Duration:** {result.duration:.2f}s  
+**Start Time:** {result.start_time.strftime('%Y-%m-%d %H:%M:%S')}  
+**End Time:** {result.end_time.strftime('%Y-%m-%d %H:%M:%S')}
+
+"""
+            
+            if result.error_message:
+                markdown += f"""**Error Message:**
+```
+{result.error_message}
+```
+
+"""
+            
+            if result.output:
+                markdown += f"""**Output:**
+```
+{result.output[:500]}{'...' if len(result.output) > 500 else ''}
+```
+
+"""
+            
+            if result.screenshots:
+                markdown += "**Screenshots:**\n"
+                for screenshot in result.screenshots:
+                    markdown += f"- {screenshot}\n"
+                markdown += "\n"
+            
+            markdown += "---\n\n"
+        
+        return markdown
+    
     def _generate_html_report(self, summary: Dict[str, Any], results: List[TestResult]) -> str:
         """Generate HTML report content
         

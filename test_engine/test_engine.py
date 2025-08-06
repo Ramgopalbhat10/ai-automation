@@ -46,11 +46,15 @@ class TestEngine:
         if test_suite.setup_prompt:
             await self._execute_setup(test_suite.setup_prompt)
         
-        # Execute tests
-        if test_suite.parallel:
+        # Execute tests - check for config overrides
+        # Config overrides take precedence over YAML settings
+        parallel_execution = self.config.get("test.parallel", test_suite.parallel)
+        max_workers = self.config.get("test.max_workers", test_suite.max_workers)
+        
+        if parallel_execution:
             results = await self._execute_tests_parallel(
                 test_suite.tests, 
-                test_suite.max_workers
+                max_workers
             )
         else:
             results = await self._execute_tests_sequential(test_suite.tests)
