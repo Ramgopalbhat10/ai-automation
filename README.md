@@ -1,31 +1,49 @@
-# Website Testing Automation with Browser-Use
+# BrowserTest AI
 
-A simple Python automation script that uses the `browser-use` library to test websites with natural language prompts. This project demonstrates how to automate browser actions using AI to perform website testing tasks.
+A modular, intelligent browser automation testing framework that uses the `browser-use` library with LLM integration for natural language test creation and execution.
 
-## Features
+## 🚀 Features
 
-- **Prompt-based automation**: Describe what you want to test in natural language
-- **Website testing**: Automatically navigate and interact with websites
-- **Flexible testing**: Support for custom websites and actions
-- **Example implementation**: Ready-to-use example for testing windsurf.com blog
+- **Natural Language Testing**: Write tests using simple prompts instead of complex action sequences
+- **Multi-LLM Support**: Configurable LLM providers (Google Gemini, OpenAI, etc.)
+- **Cross-Browser Testing**: Support for Chrome, Firefox, Safari, Edge
+- **Parallel Execution**: Concurrent test execution with browser session pooling
+- **Environment Management**: Multi-environment support (dev, staging, production)
+- **YAML Configuration**: Simple, readable test definitions
+- **Comprehensive Reporting**: HTML, JSON, and JUnit report formats
 
-## Prerequisites
+## 📁 Project Structure
 
-- Python 3.8 or higher
-- Google API key (for Gemini)
-- Internet connection
+```
+ai-automation/
+├── config/                 # Configuration management
+│   ├── yaml_schema.py     # YAML schema definitions
+│   ├── yaml_loader.py     # YAML file loader
+│   └── test_config.py     # Configuration tests
+├── llm_integration/        # LLM provider integrations
+├── test_engine/           # Core test execution engine
+├── test_suites/           # Test suite definitions
+│   ├── examples/          # Example test suites
+│   ├── production/        # Production test suites
+│   └── staging/           # Staging test suites
+├── reports/               # Test execution reports
+├── requirements.txt       # Python dependencies
+├── setup.py              # Package setup
+└── tasks.md              # Development tasks
+```
 
-## Installation
+## 🛠️ Installation
 
-1. **Clone or download this project**
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd ai-automation
+   ```
 
-2. **Set up virtual environment** (recommended):
+2. **Create virtual environment**:
    ```bash
    python -m venv venv
-   # On Windows:
-   venv\Scripts\activate
-   # On macOS/Linux:
-   source venv/bin/activate
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 3. **Install dependencies**:
@@ -33,151 +51,154 @@ A simple Python automation script that uses the `browser-use` library to test we
    pip install -r requirements.txt
    ```
 
-4. **Install Playwright browsers**:
+4. **Install the package**:
    ```bash
-   playwright install
+   pip install -e .
    ```
 
-5. **Set up environment variables**:
-   - Copy `.env.example` to `.env`
-   - Add your Google API key to the `.env` file:
-     ```
-     GOOGLE_API_KEY=your_actual_api_key_here
-     ```
+## 📝 Writing Tests
 
-## Usage
+Tests are defined using simple YAML files with natural language prompts:
 
-### Quick Example: Test Windsurf.com for Wave 11 Articles
+```yaml
+name: "E-commerce Website Testing"
+description: "Test online store functionality"
+base_url: "https://demo.opencart.com"
+
+default_browser:
+  type: "chrome"
+  headless: false
+  viewport:
+    width: 1920
+    height: 1080
+
+variables:
+  test_email: "demo@example.com"
+  search_term: "laptop"
+
+tests:
+  - name: "Homepage Navigation"
+    prompt: "Navigate to the homepage and verify it loads correctly with all main navigation elements visible"
+    success_criteria: "Page title is correct, navigation menu is visible, and main content loads"
+    timeout: 30
+    tags: ["smoke", "navigation"]
+    
+  - name: "Product Search"
+    prompt: "Use the search functionality to find laptops and verify search results are displayed correctly"
+    success_criteria: "Search results page shows relevant laptop products with images and prices"
+    timeout: 45
+    tags: ["search", "products"]
+```
+
+## 🎯 Key Concepts
+
+### Natural Language Prompts
+Instead of defining explicit actions and assertions, you describe what you want to test in natural language:
+
+- **Prompt**: What the test should do
+- **Success Criteria**: How to determine if the test passed
+- **Variables**: Dynamic values for test data
+
+### Simplified Configuration
+The framework focuses on:
+- **Prompt-based testing** using LLM intelligence
+- **Minimal configuration** with sensible defaults
+- **Environment-specific** test execution
+- **Flexible browser** and execution settings
+
+## 🔧 Configuration
+
+### Browser Settings
+```yaml
+default_browser:
+  type: "chrome"          # chrome, firefox, webkit, edge
+  headless: false         # Run in headless mode
+  viewport:
+    width: 1920
+    height: 1080
+  timeout: 30000          # Page load timeout (ms)
+```
+
+### Test Execution
+```yaml
+parallel: false           # Run tests in parallel
+max_workers: 2            # Number of parallel workers
+fail_fast: false          # Stop on first failure
+```
+
+### Environment Variables
+```yaml
+variables:
+  test_user: "${TEST_USER}"     # Environment variable
+  base_url: "https://staging.example.com"
+  timeout: 60
+```
+
+## 🚀 Usage
+
+### Running Tests
+```bash
+# Run a specific test suite
+python -m ai_automation run test_suites/examples/example_test_suite.yaml
+
+# Run with specific environment
+python -m ai_automation run --env staging test_suites/production/
+
+# Run in parallel
+python -m ai_automation run --parallel --workers 4 test_suites/
+```
+
+### Validating Configuration
+```bash
+# Validate YAML syntax and schema
+python -m ai_automation validate test_suites/examples/example_test_suite.yaml
+
+# Generate template
+python -m ai_automation template --output my_test_suite.yaml
+```
+
+## 🧪 Testing the Framework
+
+Run the configuration tests to ensure everything is working:
 
 ```bash
-python example_windsurf_test.py
+cd config
+python test_config.py
 ```
 
-This will:
-1. Navigate to windsurf.com
-2. Look for blog section
-3. Search for articles about "Wave 11"
-4. Report findings
+## 📊 Reports
 
-### Interactive Website Tester
+Test results are generated in multiple formats:
+- **HTML**: Interactive web reports
+- **JSON**: Machine-readable results
+- **JUnit**: CI/CD integration
 
-```bash
-python website_tester.py
-```
+Reports are saved to the `reports/` directory by default.
 
-This provides an interactive menu where you can:
-1. Test windsurf.com blog for Wave 11 articles
-2. Perform custom website tests
-3. Exit
+## 🔌 LLM Integration
 
-### Custom Testing Examples
+The framework supports multiple LLM providers:
+- Google Gemini
+- OpenAI GPT
+- Anthropic Claude
+- Local models via Ollama
 
-You can test any website with natural language prompts:
+Configure your preferred provider in the test suite or environment variables.
 
-```python
-from website_tester import WebsiteTester
-import asyncio
+## 🤝 Contributing
 
-async def custom_test():
-    tester = WebsiteTester()
-    
-    # Test a news website
-    result = await tester.custom_test(
-        "https://news.ycombinator.com",
-        "Find the top 3 articles and extract their titles and scores"
-    )
-    print(result)
-    
-    # Test an e-commerce site
-    result = await tester.custom_test(
-        "https://example-shop.com",
-        "Navigate to the products page and find items under $50"
-    )
-    print(result)
+1. Follow the tasks outlined in `tasks.md`
+2. Maintain backward compatibility
+3. Add tests for new features
+4. Update documentation
 
-asyncio.run(custom_test())
-```
+## 📄 License
 
-## How It Works
+This project is licensed under the MIT License.
 
-The script uses the `browser-use` library, which:
+## 🆘 Support
 
-1. **Launches a browser** (Chrome/Chromium via Playwright)
-2. **Uses AI** (Google Gemini) to understand your natural language instructions
-3. **Performs actions** like clicking, typing, scrolling, and extracting data
-4. **Returns results** in a structured format
-
-## Configuration Options
-
-### Headless Mode
-
-Run browser in background (no visible window):
-
-```python
-tester = WebsiteTester(headless=True)
-```
-
-### Different AI Models
-
-You can use different Google models by modifying the model initialization in `website_tester.py`:
-
-```python
-# Uses Google Gemini 2.0 Flash Experimental by default
-# Can be configured to use other Gemini models
-```
-
-## Example Prompts
-
-Here are some example prompts you can use:
-
-- **Blog testing**: "Go to [website] and find articles about [topic]"
-- **E-commerce testing**: "Navigate to the products page and find items in the [category] section"
-- **Form testing**: "Fill out the contact form with test data and submit it"
-- **Search testing**: "Use the search function to look for [term] and report the results"
-- **Navigation testing**: "Check if all main navigation links work properly"
-
-## Troubleshooting
-
-### Common Issues
-
-1. **"Google API key not found"**
-   - Make sure you've set the `GOOGLE_API_KEY` environment variable
-   - Check that your `.env` file is in the correct location
-
-2. **"Playwright browser not found"**
-   - Run `playwright install` to download browser binaries
-
-3. **"Module not found" errors**
-   - Make sure you've installed all dependencies: `pip install -r requirements.txt`
-   - Check that your virtual environment is activated
-
-4. **Browser automation fails**
-   - Some websites have anti-bot protection
-   - Try running in non-headless mode to see what's happening
-   - Check if the website structure has changed
-
-### Debug Mode
-
-Enable debug logging by setting in your `.env` file:
-```
-BROWSER_USE_LOGGING_LEVEL=debug
-```
-
-## Limitations
-
-- Requires Google API access (costs apply)
-- Some websites may block automated browsers
-- Complex interactions may require more specific prompts
-- Rate limits may apply based on your Google API plan
-
-## Contributing
-
-Feel free to improve this script by:
-- Adding more example test cases
-- Improving error handling
-- Adding support for other AI providers
-- Creating more specialized testing functions
-
-## License
-
-This project is for educational and testing purposes. Make sure to respect website terms of service when using automated testing.
+For issues and questions:
+1. Check the example test suites in `test_suites/examples/`
+2. Review the configuration schema in `config/yaml_schema.py`
+3. Run the test validation script: `python config/test_config.py`

@@ -79,14 +79,14 @@ def demo_without_api():
     if api_key:
         print("✅ Google API key detected in environment")
         print("\n🎯 You can now run:")
-        print("   python example_windsurf_test.py")
-        print("   python website_tester.py")
+        print("   python scripts/example_windsurf_test.py")
+        print("   python scripts/website_tester.py")
     elif env_file_exists:
         print("📝 .env file found")
         print("\n⚠️  Please add your Google API key to the .env file:")
         print("   GOOGLE_API_KEY=your_actual_api_key_here")
         print("\n🎯 Then run:")
-        print("   python example_windsurf_test.py")
+        print("   python scripts/example_windsurf_test.py")
     else:
         print("⚠️  To run actual automation, you need:")
         print("\n1. Google API key")

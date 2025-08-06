@@ -1,0 +1,184 @@
+{
+  "export_time": "2025-08-06T15:06:59.811655",
+  "results": [
+    {
+      "test_name": "Homepage Load and Navigation",
+      "status": "passed",
+      "start_time": "2025-08-06T15:04:24.228206",
+      "end_time": "2025-08-06T15:04:37.613598",
+      "duration": 13.385392,
+      "output": "AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Navigated to https://www.amazon.com', extracted_content='🔗 Navigated to https://www.amazon.com', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=True, success=True, error=None, attachments=[], long_term_memory='Task completed: True - The Amazon homepage loads correctly and contains the following elements:\\n- Amazon logo\\n- Main search - 102 more characters', extracted_content='The Amazon homepage loads correctly and contains the following elements:\\n- Amazon logo\\n- Main search bar\\n- Navigation menu\\n- Featured products sections\\nAll requested elements are visible and functional.', include_extracted_content_only_once=False, include_in_memory=False)], all_model_outputs=[{'go_to_url': {'url': 'https://www.amazon.com', 'new_tab': False}, 'interacted_element': None}, {'done': {'text': 'The Amazon homepage loads correctly and contains the following elements:\\n- Amazon logo\\n- Main search bar\\n- Navigation menu\\n- Featured products sections\\nAll requested elements are visible and functional.', 'success': True, 'files_to_display': []}, 'interacted_element': None}])",
+      "error_message": null,
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "smoke",
+          "navigation",
+          "homepage"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Product Search Functionality",
+      "status": "passed",
+      "start_time": "2025-08-06T15:04:37.613598",
+      "end_time": "2025-08-06T15:05:03.876472",
+      "duration": 26.262874,
+      "output": "AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Navigated to https://www.amazon.com', extracted_content='🔗 Navigated to https://www.amazon.com', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory=\"Input 'wireless headphones' into element 6.\", extracted_content='⌨️  Input wireless headphones into index 6', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Something new appeared after action 1 / 2, following actions are NOT executed and should be retried.', extracted_content='Something new appeared after action 1 / 2, following actions are NOT executed and should be retried.', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Clicked button with index 7: ', extracted_content='Clicked button with index 7: ', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=True, success=True, error=None, attachments=[], long_term_memory=\"Task completed: True - Successfully searched for 'wireless headphones' on Amazon.com and verified that the search results s - 32 more characters\", extracted_content=\"Successfully searched for 'wireless headphones' on Amazon.com and verified that the search results show wireless headphone products.\", include_extracted_content_only_once=False, include_in_memory=False)], all_model_outputs=[{'go_to_url': {'url': 'https://www.amazon.com', 'new_tab': False}, 'interacted_element': None}, {'input_text': {'index': 6, 'text': 'wireless headphones'}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[2]/div[1]/input', highlight_index=6, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'input'], attributes={'type': 'text', 'id': 'twotabsearchtextbox', 'value': '', 'name': 'field-keywords', 'autocomplete': 'off', 'placeholder': 'Search Amazon', 'class': 'nav-input nav-progressive-attribute', 'dir': 'auto', 'tabindex': '0', 'aria-label': 'Search Amazon', 'role': 'searchbox', 'aria-autocomplete': 'list', 'aria-controls': 'sac-autocomplete-results-container', 'aria-expanded': 'false', 'aria-haspopup': 'grid', 'spellcheck': 'false'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(2) > div:nth-of-type(1) > input.nav-input.nav-progressive-attribute[type=\"text\"][id=\"twotabsearchtextbox\"][name=\"field-keywords\"][autocomplete=\"off\"][placeholder=\"Search Amazon\"][aria-label=\"Search Amazon\"][role=\"searchbox\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'click_element_by_index': {'index': 7}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[3]/div/span/input', highlight_index=7, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'span', 'input'], attributes={'id': 'nav-search-submit-button', 'type': 'submit', 'class': 'nav-input nav-progressive-attribute', 'value': 'Go', 'tabindex': '0'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(3) > div > span > input.nav-input.nav-progressive-attribute[id=\"nav-search-submit-button\"][type=\"submit\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'click_element_by_index': {'index': 7}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[3]/div/span/input', highlight_index=7, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'span', 'input'], attributes={'id': 'nav-search-submit-button', 'type': 'submit', 'class': 'nav-input nav-progressive-attribute', 'value': 'Go', 'tabindex': '0'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(3) > div > span > input.nav-input.nav-progressive-attribute[id=\"nav-search-submit-button\"][type=\"submit\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'done': {'text': \"Successfully searched for 'wireless headphones' on Amazon.com and verified that the search results show wireless headphone products.\", 'success': True, 'files_to_display': []}, 'interacted_element': None}])",
+      "error_message": null,
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "search",
+          "products",
+          "core"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Product Detail Page",
+      "status": "passed",
+      "start_time": "2025-08-06T15:05:03.876472",
+      "end_time": "2025-08-06T15:06:56.026629",
+      "duration": 112.150157,
+      "output": "AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Navigated to https://www.amazon.com', extracted_content='🔗 Navigated to https://www.amazon.com', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Element index changed after action 1 / 3, because page changed.', extracted_content='Element index changed after action 1 / 3, because page changed.', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory=\"Input 'wireless headphones' into element 6.\", extracted_content='⌨️  Input wireless headphones into index 6', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Something new appeared after action 1 / 2, following actions are NOT executed and should be retried.', extracted_content='Something new appeared after action 1 / 2, following actions are NOT executed and should be retried.', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Clicked button with index 7: ', extracted_content='Clicked button with index 7: ', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Clicked button with index 33: Wireless Earbuds, Bluetooth Ear Buds Headphones, 40H Long Playtime, Stereo Deep Bass, LED Power Display, IPX7, Lightweight in Ear Earphone with Mic for iPhone Android Phone', extracted_content='Clicked button with index 33: Wireless Earbuds, Bluetooth Ear Buds Headphones, 40H Long Playtime, Stereo Deep Bass, LED Power Display, IPX7, Lightweight in Ear Earphone with Mic for iPhone Android Phone', include_extracted_content_only_once=False, include_in_memory=True), ActionResult(is_done=False, success=None, error=None, attachments=None, long_term_memory='Extracted content from https://www.amazon.com/HUIFU-Wireless-Bluetooth-Headphones-Lightweight/dp/B0F8BLKSR2\\n<query>Extract product details including title, price, rating, and add to cart button text\\n</query>\\n<extracted_content>\\nPage Link: https://www.amazon.com/HUIFU-Wireless-Bluetooth-Headphones-Lightweight/dp/B0F8BLKSR2\\nQuery: Extract product details including title, price, rating, and add to cart button text\\nExtracted Content:\\nHere is the extracted information in JSON format:\\n\\n```json\\n{\\n    \"error\": \"The requested information is not available in the page\",\\n    \"message\": \"The page does not provide a clear \\'Add to Cart\\' button text. However, it does provide product details.\",\\n    \"product_details\": {\\n17 more lines...\\n</extracted_content>\\n<file_system>Extracted content saved to file extracted_content_0.md successfully.</file_system>', extracted_content='Page Link: https://www.amazon.com/HUIFU-Wireless-Bluetooth-Headphones-Lightweight/dp/B0F8BLKSR2\\nQuery: Extract product details including title, price, rating, and add to cart button text\\nExtracted Content:\\nHere is the extracted information in JSON format:\\n\\n```json\\n{\\n    \"error\": \"The requested information is not available in the page\",\\n    \"message\": \"The page does not provide a clear \\'Add to Cart\\' button text. However, it does provide product details.\",\\n    \"product_details\": {\\n        \"title\": \"HUIFU Wireless Earbuds, Bluetooth Ear Buds Headphones,40H Long Playtime, Stereo Deep Bass, LED Power Display, IPX7, Lightweight in Ear Earphone with Mic for iPhone Android Phone\",\\n        \"price\": \"No featured offers available\",\\n        \"rating\": \"4.8 out of 5 stars (1,446 ratings)\",\\n        \"features\": [\\n            \"Upgraded Bluetooth 5.3 with Ultra-Low Latency (0.02s) Wireless Ear Buds\",\\n            \"Superior Audio Performance for Unmatched Clarity\",\\n            \"All-Day Battery Life Bluetooth Earphone with Smart Power Display\",\\n            \"Lightweight, Ergonomic Comfort Earbuds for Extended Wear\",\\n            \"Smart Touch Controls for Effortless Command\"\\n        ]\\n    }\\n}\\n```\\n\\nThe page does not provide a clear \\'Add to Cart\\' button text. However, it does provide product details such as title, price (although no featured offers are available), rating, and features. \\n\\nIf you need any further assistance or have any other queries, feel free to ask!', include_extracted_content_only_once=True, include_in_memory=False), ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497131, Requested 6633. Please try again in 10m50.338599999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False), ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497115, Requested 6479. Please try again in 10m20.9054s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False), ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497102, Requested 6691. Please try again in 10m55.357s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False)], all_model_outputs=[{'go_to_url': {'url': 'https://www.amazon.com', 'new_tab': False}, 'interacted_element': None}, {'input_text': {'index': 1, 'text': 'wireless headphones'}, 'interacted_element': None}, {'click_element_by_index': {'index': 2}, 'interacted_element': None}, {'input_text': {'index': 6, 'text': 'wireless headphones'}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[2]/div[1]/input', highlight_index=6, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'input'], attributes={'type': 'text', 'id': 'twotabsearchtextbox', 'value': '', 'name': 'field-keywords', 'autocomplete': 'off', 'placeholder': 'Search Amazon', 'class': 'nav-input nav-progressive-attribute', 'dir': 'auto', 'tabindex': '0', 'aria-label': 'Search Amazon', 'role': 'searchbox', 'aria-autocomplete': 'list', 'aria-controls': 'sac-autocomplete-results-container', 'aria-expanded': 'false', 'aria-haspopup': 'grid', 'spellcheck': 'false'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(2) > div:nth-of-type(1) > input.nav-input.nav-progressive-attribute[type=\"text\"][id=\"twotabsearchtextbox\"][name=\"field-keywords\"][autocomplete=\"off\"][placeholder=\"Search Amazon\"][aria-label=\"Search Amazon\"][role=\"searchbox\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'click_element_by_index': {'index': 7}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[3]/div/span/input', highlight_index=7, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'span', 'input'], attributes={'id': 'nav-search-submit-button', 'type': 'submit', 'class': 'nav-input nav-progressive-attribute', 'value': 'Go', 'tabindex': '0'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(3) > div > span > input.nav-input.nav-progressive-attribute[id=\"nav-search-submit-button\"][type=\"submit\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'click_element_by_index': {'index': 7}, 'interacted_element': DOMHistoryElement(tag_name='input', xpath='html/body/div[1]/header/div/div[1]/div[2]/div/form/div[3]/div/span/input', highlight_index=7, entire_parent_branch_path=['div', 'header', 'div', 'div', 'div', 'div', 'form', 'div', 'div', 'span', 'input'], attributes={'id': 'nav-search-submit-button', 'type': 'submit', 'class': 'nav-input nav-progressive-attribute', 'value': 'Go', 'tabindex': '0'}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > header > div > div:nth-of-type(1) > div:nth-of-type(2) > div > form > div:nth-of-type(3) > div > span > input.nav-input.nav-progressive-attribute[id=\"nav-search-submit-button\"][type=\"submit\"]', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'click_element_by_index': {'index': 33}, 'interacted_element': DOMHistoryElement(tag_name='h2', xpath='html/body/div[1]/div[1]/div[1]/div[1]/div/span[1]/div[1]/div[2]/div/div/span/div/div/div/div[2]/div/div/div[1]/a/h2', highlight_index=33, entire_parent_branch_path=['div', 'div', 'div', 'div', 'div', 'span', 'div', 'div', 'div', 'div', 'span', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'a', 'h2'], attributes={}, shadow_root=False, css_selector='html > body > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div > span:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div > div > span > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > a > h2', page_coordinates=None, viewport_coordinates=None, viewport_info=None)}, {'extract_structured_data': {'query': 'Extract product details including title, price, rating, and add to cart button text', 'extract_links': False}, 'interacted_element': None}, {'extract_structured_data': {'query': 'Extract product details including title, price, rating, and add to cart button text', 'extract_links': False}, 'interacted_element': None}, {'extract_structured_data': {'query': 'Extract product details including title, price, rating, and add to cart button text', 'extract_links': False}, 'interacted_element': None}, {'extract_structured_data': {'query': 'Extract product details including title, price, rating, and add to cart button text', 'extract_links': False}, 'interacted_element': None}])",
+      "error_message": null,
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "products",
+          "details",
+          "core"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Add to Cart (Guest)",
+      "status": "passed",
+      "start_time": "2025-08-06T15:06:56.027630",
+      "end_time": "2025-08-06T15:06:57.963433",
+      "duration": 1.935803,
+      "output": "AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497093, Requested 4096. Please try again in 3m25.292999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False), ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497092, Requested 4112. Please try again in 3m27.9268s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False), ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497091, Requested 4127. Please try again in 3m30.3558s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False)], all_model_outputs=[])",
+      "error_message": null,
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "cart",
+          "guest",
+          "critical"
+        ],
+        "retry_count": 0
+      }
+    },
+    {
+      "test_name": "Shopping Cart Management",
+      "status": "passed",
+      "start_time": "2025-08-06T15:06:57.963433",
+      "end_time": "2025-08-06T15:06:59.809655",
+      "duration": 1.846222,
+      "output": "AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497082, Requested 4093. Please try again in 3m23.0066s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False), ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497081, Requested 4108. Please try again in 3m25.3656s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False), ActionResult(is_done=False, success=None, error='(\\'{\"error\":{\"message\":\"Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01hxcahbq7f3gscp2zxdkw6k9d` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 497080, Requested 4124. Please try again in 3m28.0014s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\\\\n\\', 429)', attachments=None, long_term_memory=None, extracted_content=None, include_extracted_content_only_once=False, include_in_memory=False)], all_model_outputs=[])",
+      "error_message": null,
+      "screenshots": [],
+      "metadata": {
+        "url": "",
+        "browser": {
+          "type": "chrome",
+          "headless": false,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "timeout": 30000,
+          "slow_mo": 0,
+          "args": []
+        },
+        "environment": "production",
+        "tags": [
+          "cart",
+          "management"
+        ],
+        "retry_count": 0
+      }
+    }
+  ],
+  "summary": {
+    "suite_name": "Export",
+    "execution_time": "2025-08-06T15:06:59.811655",
+    "total_duration": 155.580448,
+    "statistics": {
+      "total_tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "success_rate": 100.0,
+      "average_duration": 31.12
+    },
+    "performance": {
+      "slowest_test": {
+        "name": "Product Detail Page",
+        "duration": 112.150157
+      },
+      "fastest_test": {
+        "name": "Shopping Cart Management",
+        "duration": 1.846222
+      }
+    },
+    "failed_tests": []
+  }
+}

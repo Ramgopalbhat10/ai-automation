@@ -1,0 +1,67 @@
+name: "Amazon Website Basic Testing"
+description: "End-to-end testing of Amazon's basic functionality without login requirements"
+base_url: "https://www.amazon.com"
+parallel: false
+max_workers: 1
+fail_fast: false
+
+default_environment: "production"
+default_llm_provider: "groq"
+default_llm_model: "meta-llama/llama-4-maverick-17b-128e-instruct"
+default_browser:
+  type: "chrome"
+  headless: false
+  viewport:
+    width: 1920
+    height: 1080
+  timeout: 30000
+
+variables:
+  search_term: "wireless headphones"
+  category_search: "books"
+  price_filter: "Under $25"
+  sort_option: "Price: Low to High"
+
+setup_prompt: "Navigate to Amazon homepage and accept any cookie banners or location prompts that appear"
+teardown_prompt: "Clear any items from cart and close any open dialogs or popups"
+
+tests:
+  - name: "Homepage Load and Navigation"
+    prompt: "STAY ON AMAZON.COM ONLY. Verify the Amazon homepage loads correctly. Check that the Amazon logo, main search bar, and navigation menu are visible and functional. Do not navigate away from Amazon.com."
+    success_criteria: "Page loads successfully, Amazon logo is visible, search bar is functional, main navigation menu is present, and page title contains 'Amazon'"
+    timeout: 90
+    retry_count: 0
+    tags: ["smoke", "navigation", "homepage"]
+    
+  - name: "Product Search Functionality"
+    prompt: "STAY ON AMAZON.COM ONLY. Use the Amazon search bar to search for 'wireless headphones'. Verify search results show wireless headphone products. Do not use any other search engines or websites."
+    success_criteria: "Search results page loads, shows relevant wireless headphone products with images, titles, prices, and ratings"
+    timeout: 90
+    retry_count: 0
+    tags: ["search", "products", "core"]
+    variables:
+      search_query: "${search_term}"
+    
+  - name: "Product Detail Page"
+    prompt: "STAY ON AMAZON.COM ONLY. From the wireless headphone search results on Amazon, click on one product to view its detail page. Verify the product detail page shows complete information including title, images, price, and add to cart button."
+    success_criteria: "Product detail page displays product title, images, price, description, customer reviews section, and add to cart button"
+    timeout: 120
+    retry_count: 0
+    tags: ["products", "details", "core"]
+    
+  - name: "Add to Cart (Guest)"
+    prompt: "STAY ON AMAZON.COM ONLY. Add the current product to cart without logging in. Verify the cart updates correctly with the added item. Do not navigate to any other websites."
+    success_criteria: "Product can be added to cart, cart icon updates with item count, cart page shows added product with correct details"
+    timeout: 90
+    retry_count: 0
+    tags: ["cart", "guest", "critical"]
+    
+  - name: "Shopping Cart Management"
+    prompt: "STAY ON AMAZON.COM ONLY. View the Amazon shopping cart, modify item quantities, and test remove item functionality. Only work within Amazon's cart interface."
+    success_criteria: "Cart page displays added items, quantity can be modified, items can be removed, and total price updates correctly"
+    timeout: 120
+    retry_count: 0
+    tags: ["cart", "management"]
+
+report_format: ["html", "json"]
+output_dir: "reports/amazon_test"
