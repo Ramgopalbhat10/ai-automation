@@ -38,9 +38,9 @@ def validate_project_structure():
         "config/test_config.py",
         "test_suites/examples/example_test_suite.yaml",
         "README.md",
-        "setup.py",
+        "scripts/setup.py",
         "requirements.txt",
-        "tasks.md"
+        "docs/tasks.md"
     ]
     
     # Check directories
@@ -76,13 +76,9 @@ def validate_yaml_system():
     print("\n🔍 Validating YAML configuration system...")
     
     try:
-        # Add config directory to path for imports
-        config_path = project_root / "config"
-        sys.path.insert(0, str(config_path))
-        
         # Import the configuration modules
-        from yaml_schema import YAMLSchemaValidator, TestSuite, TestCase, BrowserConfig
-        from yaml_loader import YAMLLoader
+        from config.yaml_schema import YAMLSchemaValidator, TestSuite, TestCase, BrowserConfig
+        from config.yaml_loader import YAMLLoader
         
         print("  ✅ Successfully imported configuration modules")
         
@@ -138,11 +134,7 @@ def validate_example_test_suite():
     print("\n🔍 Validating example test suite...")
     
     try:
-        # Add config directory to path for imports
-        config_path = project_root / "config"
-        sys.path.insert(0, str(config_path))
-        
-        from yaml_loader import YAMLLoader
+        from config.yaml_loader import YAMLLoader
         
         loader = YAMLLoader()
         example_path = project_root / "test_suites" / "examples" / "example_test_suite.yaml"

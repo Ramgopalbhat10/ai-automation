@@ -7,7 +7,6 @@ from browser_use import Agent
 
 from config import Config
 from config.yaml_loader import TestCase
-from config.environment import EnvironmentManager
 from llm_integration.llm_provider import LLMProvider
 from llm_integration.browser_use_integration import BrowserUseIntegration
 from browser_manager import BrowserManager
@@ -21,8 +20,7 @@ class TestRunner:
         self,
         config: Config,
         llm_provider: LLMProvider,
-        browser_manager: BrowserManager,
-        environment_manager: EnvironmentManager
+        browser_manager: BrowserManager
     ):
         """Initialize test runner
         
@@ -30,12 +28,10 @@ class TestRunner:
             config: Application configuration
             llm_provider: LLM provider instance
             browser_manager: Browser manager instance
-            environment_manager: Environment manager instance
         """
         self.config = config
         self.llm_provider = llm_provider
         self.browser_manager = browser_manager
-        self.environment_manager = environment_manager
         self.browser_use_integration = BrowserUseIntegration(config, llm_provider)
     
     async def run_test(self, test_case: TestCase) -> TestResult:
@@ -51,10 +47,7 @@ class TestRunner:
         
         try:
             # Set environment for this test
-            if test_case.environment:
-                # Convert Environment enum to string value
-                env_name = test_case.environment.value if hasattr(test_case.environment, 'value') else str(test_case.environment)
-                self.environment_manager.set_current_environment(env_name)
+
             
             # Create LLM provider for this test case if specified
             test_llm_provider = self._get_test_llm_provider(test_case)
@@ -222,42 +215,28 @@ class TestRunner:
         }
     
     def _resolve_test_url(self, url: str) -> str:
-        """Resolve test URL using environment manager
+        """Resolve test URL using configuration
         
         Args:
-            url: URL path or full URL
+            url: URL to resolve
             
         Returns:
-            Resolved full URL
+            Resolved URL
         """
         if not url:
             return ""
         
-        # If it's already a full URL, return as-is
+        # Return absolute URLs as-is
         if url.startswith(('http://', 'https://')):
             return url
         
-        # Resolve using environment manager
-        try:
-            return self.environment_manager.resolve_url(url)
-        except ValueError:
-            # Fallback to base URL from config
-            base_url = self.config.get("environment.base_url", "")
-            if base_url:
-                return f"{base_url.rstrip('/')}/{url.lstrip('/')}"
-            return url
+        # Use base URL from config for relative URLs
+        base_url = self.config.get("base_url", "")
+        if base_url:
+            return f"{base_url.rstrip('/')}/{url.lstrip('/')}"
+        return url
     
-    def _get_sensitive_data(self, environment: str) -> Optional[Dict[str, Dict[str, str]]]:
-        """Get sensitive data configuration for environment
-        
-        Args:
-            environment: Environment name
-            
-        Returns:
-            Sensitive data configuration or None
-        """
-        env = self.environment_manager.get_environment(environment)
-        return env.credentials if env else None
+
     
     async def _capture_screenshot_from_agent(self) -> Optional[str]:
         """Capture screenshot using current agent

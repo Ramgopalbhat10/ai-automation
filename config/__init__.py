@@ -4,7 +4,7 @@ from .config import Config
 from .yaml_loader import YAMLLoader
 from .yaml_schema import (
     TestCase, TestSuite, BrowserConfig,
-    YAMLSchemaValidator, BrowserType, Environment
+    YAMLSchemaValidator, BrowserType
 )
 
 __all__ = [
@@ -15,5 +15,4 @@ __all__ = [
     "BrowserConfig",
     "YAMLSchemaValidator",
     "BrowserType",
-    "Environment",
 ]

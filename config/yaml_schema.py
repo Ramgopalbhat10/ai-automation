@@ -17,12 +17,7 @@ class BrowserType(Enum):
     EDGE = "edge"
 
 
-class Environment(Enum):
-    """Test environments"""
-    DEVELOPMENT = "development"
-    STAGING = "staging"
-    PRODUCTION = "production"
-    LOCAL = "local"
+
 
 
 @dataclass
@@ -54,8 +49,7 @@ class TestCase:
     retry_count: int = 1
     tags: List[str] = field(default_factory=list)
     
-    # Environment and browser
-    environment: Environment = Environment.DEVELOPMENT
+    # Browser configuration
     browser: BrowserConfig = field(default_factory=BrowserConfig)
     
     # LLM settings
@@ -73,8 +67,7 @@ class TestCase:
     teardown_prompt: str = ""
     
     def __post_init__(self):
-        if isinstance(self.environment, str):
-            self.environment = Environment(self.environment)
+        pass
 
 
 @dataclass
@@ -89,8 +82,7 @@ class TestSuite:
     max_workers: int = 2
     fail_fast: bool = False
     
-    # Default settings
-    default_environment: Environment = Environment.DEVELOPMENT
+    # Default configurations
     default_browser: BrowserConfig = field(default_factory=BrowserConfig)
     default_llm_provider: str = "google"  # google, openai, groq
     default_llm_model: Optional[str] = None
@@ -109,8 +101,7 @@ class TestSuite:
     output_dir: str = "reports"
     
     def __post_init__(self):
-        if isinstance(self.default_environment, str):
-            self.default_environment = Environment(self.default_environment)
+        pass
 
 
 class YAMLSchemaValidator:
@@ -211,7 +202,7 @@ class YAMLSchemaValidator:
             "parallel": False,
             "max_workers": 2,
             "fail_fast": False,
-            "default_environment": "development",
+
             "default_browser": {
                 "type": "chrome",
                 "headless": False,

@@ -51,10 +51,7 @@ class Config:
                 "format": os.getenv("REPORT_FORMAT", "html,json"),
                 "screenshots": os.getenv("SCREENSHOTS", "true").lower() == "true",
             },
-            "environment": {
-                "current": os.getenv("ENVIRONMENT", "development"),
-                "base_url": os.getenv("BASE_URL"),
-            }
+            "base_url": os.getenv("BASE_URL")
         })
     
     def _load_config_file(self, config_file: str):

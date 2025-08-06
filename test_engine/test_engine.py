@@ -6,8 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from config import Config
-from config.yaml_loader import TestSuite, TestCase
-from config.environment import EnvironmentManager
+from config.yaml_loader import TestSuite, TestCase, YAMLLoader
 from llm_integration.llm_provider import LLMProvider
 from browser_manager import BrowserManager
 from .test_runner import TestRunner
@@ -24,16 +23,12 @@ class TestEngine:
             config: Application configuration
         """
         self.config = config
-        self.environment_manager = EnvironmentManager()
+        
         # Get LLM provider type from config
         provider_type = config.get("llm.provider", "google")
         self.llm_provider = LLMProvider.create_provider(provider_type, config)
         self.browser_manager = BrowserManager(config)
         self.result_collector = ResultCollector()
-        
-        # Set current environment
-        current_env = config.get("environment.current", "development")
-        self.environment_manager.set_current_environment(current_env)
     
     async def execute_test_suite(self, test_suite: TestSuite) -> Dict[str, Any]:
         """Execute a complete test suite
@@ -80,6 +75,8 @@ class TestEngine:
         print(f"Test suite completed in {duration:.2f} seconds")
         return summary
     
+
+    
     async def execute_single_test(self, test_case: TestCase) -> TestResult:
         """Execute a single test case with LLM-powered automation
         
@@ -92,8 +89,7 @@ class TestEngine:
         test_runner = TestRunner(
             self.config,
             self.llm_provider,
-            self.browser_manager,
-            self.environment_manager
+            self.browser_manager
         )
         
         return await test_runner.run_test(test_case)

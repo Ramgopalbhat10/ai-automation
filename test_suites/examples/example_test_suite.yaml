@@ -1,0 +1,51 @@
+# Example Test Suite for BrowserTest AI
+# This demonstrates the simplified YAML configuration without environment functionality
+
+name: "Example Test Suite"
+description: "Basic example test suite demonstrating natural language browser automation"
+
+# Test execution settings
+parallel: false
+max_workers: 2
+fail_fast: false
+
+# Default configurations
+default_browser:
+  type: "chromium"
+  headless: false
+  viewport:
+    width: 1920
+    height: 1080
+  timeout: 30000
+
+default_llm_provider: "google"
+base_url: "https://example.com"
+
+# Test cases
+tests:
+  - name: "Google Search Test"
+    description: "Test basic Google search functionality"
+    prompt: "Navigate to google.com and search for 'browser automation testing'"
+    success_criteria: "Search results page should be displayed with relevant results about browser automation"
+    url: "https://google.com"
+    timeout: 30
+    retry_count: 2
+    tags: ["search", "basic"]
+    
+  - name: "Navigation Test"
+    description: "Test website navigation"
+    prompt: "Go to the homepage and click on the 'About' link in the navigation menu"
+    success_criteria: "About page should load successfully with company information"
+    url: "/"
+    timeout: 45
+    retry_count: 1
+    tags: ["navigation", "links"]
+
+# Global variables (can be used in test cases)
+variables:
+  search_term: "browser automation"
+  timeout_multiplier: 1.0
+
+# Reporting configuration
+report_format: ["html", "json"]
+output_dir: "reports"
