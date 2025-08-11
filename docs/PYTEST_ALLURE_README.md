@@ -75,6 +75,208 @@ ai-automation/
 - **Report Customization**: Title, description, environment info
 - **Link Patterns**: Issue and TMS integration
 
+## 📊 Allure History Management
+
+Allure provides powerful history tracking capabilities that show test trends, execution history, and performance metrics over time. To enable these features, you need to preserve history data between test runs.
+
+### How History Works
+
+Each time Allure generates a test report, it creates data in the `history` subdirectory within `allure-report/`. This data includes:
+- Test execution trends (up to 20 latest reports)
+- Performance metrics and duration tracking
+- Test status history (passed/failed/skipped)
+- Flaky test detection
+- Execution statistics and graphs
+
+### History Management Commands
+
+#### Using Shell Scripts (Linux/Mac)
+
+```bash
+# 1. Preserve history from previous report (before running new tests)
+./run_tests.sh preserve-history
+
+# 2. Clean results but keep history
+./run_tests.sh clean-preserve-history
+
+# 3. Run your tests
+./run_tests.sh test-yaml
+
+# 4. Generate report with history
+./run_tests.sh generate-report-with-history
+
+# 5. Create timestamped archive (optional)
+./run_tests.sh generate-timestamped-report
+
+# 6. Archive current results for backup
+./run_tests.sh archive-results
+```
+
+#### Using Batch Scripts (Windows)
+
+```cmd
+REM 1. Preserve history from previous report
+run_tests.bat preserve-history
+
+REM 2. Clean results but keep history
+run_tests.bat clean-preserve-history
+
+REM 3. Run your tests
+run_tests.bat test-yaml
+
+REM 4. Generate report with history
+run_tests.bat generate-report-with-history
+
+REM 5. Create timestamped archive (optional)
+run_tests.bat generate-timestamped-report
+
+REM 6. Archive current results for backup
+run_tests.bat archive-results
+```
+
+#### Using Makefile
+
+```bash
+# Complete workflow with history
+make preserve-history
+make clean-preserve-history
+make test-yaml
+make generate-report-with-history
+
+# Or individual commands
+make preserve-history          # Copy history from previous report
+make clean-preserve-history    # Clean results but preserve history
+make generate-report-with-history  # Generate report with history
+make generate-timestamped-report   # Create timestamped report
+make archive-results          # Archive current results
+```
+
+### Automated Workflow (Recommended)
+
+For the easiest experience, use the automated workflow command that handles everything:
+
+#### Single Command Automation
+
+```bash
+# Complete automated workflow with YAML tests (default)
+./run_tests.sh test-with-history
+
+# Automated workflow with specific test types
+./run_tests.sh test-with-history yaml
+./run_tests.sh test-with-history parallel
+./run_tests.sh test-with-history all
+./run_tests.sh test-with-history unit
+./run_tests.sh test-with-history integration
+./run_tests.sh test-with-history quick
+```
+
+#### Windows
+
+```cmd
+REM Complete automated workflow
+run_tests.bat test-with-history
+
+REM With specific test types
+run_tests.bat test-with-history yaml
+run_tests.bat test-with-history parallel
+```
+
+#### Makefile
+
+```bash
+# Automated workflow with YAML tests
+make test-with-history
+
+# Automated workflow with parallel execution
+make test-with-history-parallel
+```
+
+**What the automated workflow does:**
+1. ✅ Preserves history from previous reports
+2. ✅ Cleans old results while keeping history
+3. ✅ Runs your specified tests
+4. ✅ Generates report with history
+5. ✅ Creates timestamped archive
+6. ✅ Starts Allure server for immediate viewing
+
+### Manual Workflow (Advanced Users)
+
+For fine-grained control, follow this sequence:
+
+1. **Before running new tests**:
+   ```bash
+   # Preserve history from the last report
+   ./run_tests.sh preserve-history
+   
+   # Clean old results but keep history
+   ./run_tests.sh clean-preserve-history
+   ```
+
+2. **Run your tests**:
+   ```bash
+   ./run_tests.sh test-yaml
+   # or any other test command
+   ```
+
+3. **Generate report with history**:
+   ```bash
+   ./run_tests.sh generate-report-with-history
+   ```
+
+4. **Optional - Create archives**:
+   ```bash
+   # Create timestamped report for archival
+   ./run_tests.sh generate-timestamped-report
+   
+   # Archive results for backup
+   ./run_tests.sh archive-results
+   ```
+
+### History Features
+
+Once history is properly configured, you'll see:
+
+- **History Tab**: Shows test execution trends over time
+- **Trend Charts**: Visual representation of test stability
+- **Duration Tracking**: Performance metrics across runs
+- **Flaky Test Detection**: Identifies unstable tests
+- **Execution Statistics**: Success rates and patterns
+
+### Directory Structure with History
+
+```
+ai-automation/
+├── allure-results/             # Current test results
+│   ├── history/               # History data (copied from previous report)
+│   └── *.json                 # Test result files
+├── allure-report/             # Generated HTML report
+│   ├── history/               # History data for next run
+│   └── index.html             # Report entry point
+├── archived-results/          # Archived test results (optional)
+│   ├── results-2024-01-15-14-30/
+│   └── results-2024-01-14-10-15/
+└── archived-reports/          # Timestamped reports (optional)
+    ├── report-2024-01-15-14-30/
+    └── report-2024-01-14-10-15/
+```
+
+### Troubleshooting History
+
+1. **Empty History Tab**:
+   - Ensure you run `preserve-history` before new tests
+   - Check that `allure-report/history` exists after first report generation
+   - Verify history data is copied to `allure-results/history` before running tests
+
+2. **Missing Trends**:
+   - History requires multiple test runs to show trends
+   - Ensure consistent test names across runs
+   - Check that history data isn't being cleared between runs
+
+3. **Performance Issues**:
+   - History keeps data for up to 20 reports by default
+   - Large history files can slow report generation
+   - Use `archive-results` to backup and clean old data if needed
+
 ## 🧪 Test Types
 
 ### 1. YAML Suite Tests

@@ -81,6 +81,33 @@ clean-results:
 	@if [ -d "reports" ]; then find reports -name "*.html" -delete; find reports -name "*.md" -delete; fi
 	@echo "Cleanup completed!"
 
+# Preserve history from previous report
+preserve-history:
+	@echo "Preserving test history..."
+	@if [ -d "allure-report/history" ]; then \
+		mkdir -p allure-results; \
+		cp -r allure-report/history allure-results/; \
+		echo "History preserved from previous report"; \
+	else \
+		echo "No previous history found"; \
+	fi
+
+# Clean results but preserve history
+clean-preserve-history:
+	@echo "Cleaning test results while preserving history..."
+	@if [ -d "allure-report/history" ]; then \
+		mkdir -p allure-results; \
+		cp -r allure-report/history allure-results/; \
+	fi
+	@if [ -d "allure-results" ]; then \
+		find allure-results -type f ! -path "allure-results/history/*" -delete 2>/dev/null || true; \
+		find allure-results -type d -empty ! -path "allure-results/history*" -delete 2>/dev/null || true; \
+	fi
+	@if [ -d "allure-report" ]; then rm -rf allure-report; fi
+	@if [ -d ".pytest_cache" ]; then rm -rf .pytest_cache; fi
+	@if [ -d "reports" ]; then find reports -name "*.html" -delete; find reports -name "*.md" -delete; fi
+	@echo "Cleanup completed with history preserved!"
+
 # Generate allure HTML report
 generate-report:
 	@echo "Generating allure HTML report..."
@@ -90,6 +117,85 @@ generate-report:
 	fi
 	allure generate allure-results -o allure-report --clean
 	@echo "Report generated: allure-report/index.html"
+
+# Generate report with history preservation
+generate-report-with-history:
+	@echo "Generating allure HTML report with history..."
+	@if [ ! -d "allure-results" ]; then \
+		echo "No allure results found. Run tests first."; \
+		exit 1; \
+	fi
+	@if [ -d "allure-report/history" ] && [ ! -d "allure-results/history" ]; then \
+		echo "Copying history from previous report..."; \
+		cp -r allure-report/history allure-results/; \
+	fi
+	allure generate allure-results -o allure-report
+	@echo "Report with history generated: allure-report/index.html"
+
+# Generate timestamped report for archival
+generate-timestamped-report:
+	@echo "Generating timestamped report..."
+	@if [ ! -d "allure-results" ]; then \
+		echo "No allure results found. Run tests first."; \
+		exit 1; \
+	fi
+	$(eval TIMESTAMP := $(shell date +"%Y%m%d_%H%M%S"))
+	@mkdir -p allure-reports-archive
+	allure generate allure-results -o allure-reports-archive/allure-report-$(TIMESTAMP)
+	@echo "Timestamped report generated: allure-reports-archive/allure-report-$(TIMESTAMP)/index.html"
+
+# Archive current results with timestamp
+archive-results:
+	@echo "ℹ Archiving current test results..."
+	@timestamp=$$(date +"%Y-%m-%d-%H-%M"); \
+	mkdir -p archived-results archived-reports; \
+	if [ -d "allure-results" ]; then \
+		cp -r allure-results "archived-results/results-$$timestamp"; \
+		echo "✓ Results archived to: archived-results/results-$$timestamp"; \
+	fi; \
+	if [ -d "allure-report" ]; then \
+		cp -r allure-report "archived-reports/report-$$timestamp"; \
+		echo "✓ Report archived to: archived-reports/report-$$timestamp"; \
+	fi
+
+# Complete automated workflow with history management
+test-with-history:
+	@echo "ℹ Starting automated test workflow with history management..."
+	@echo "ℹ Test type: yaml (default)"
+	@echo "ℹ Step 1/6: Preserving test history..."
+	@$(MAKE) preserve-history
+	@echo "ℹ Step 2/6: Cleaning old results while preserving history..."
+	@$(MAKE) clean-preserve-history
+	@echo "ℹ Step 3/6: Running tests..."
+	@$(MAKE) test-yaml
+	@echo "ℹ Step 4/6: Generating report with history..."
+	@$(MAKE) generate-report-with-history
+	@echo "ℹ Step 5/6: Creating timestamped archive..."
+	@$(MAKE) generate-timestamped-report
+	@echo "ℹ Step 6/6: Starting Allure server..."
+	@echo "✓ 🎉 Automated workflow completed successfully!"
+	@echo "ℹ Report available at: allure-report/index.html"
+	@echo "ℹ Starting server for immediate viewing..."
+	@$(MAKE) serve-report
+
+test-with-history-parallel:
+	@echo "ℹ Starting automated test workflow with history management (parallel)..."
+	@echo "ℹ Test type: parallel"
+	@echo "ℹ Step 1/6: Preserving test history..."
+	@$(MAKE) preserve-history
+	@echo "ℹ Step 2/6: Cleaning old results while preserving history..."
+	@$(MAKE) clean-preserve-history
+	@echo "ℹ Step 3/6: Running tests in parallel..."
+	@$(MAKE) test-parallel
+	@echo "ℹ Step 4/6: Generating report with history..."
+	@$(MAKE) generate-report-with-history
+	@echo "ℹ Step 5/6: Creating timestamped archive..."
+	@$(MAKE) generate-timestamped-report
+	@echo "ℹ Step 6/6: Starting Allure server..."
+	@echo "✓ 🎉 Automated workflow completed successfully!"
+	@echo "ℹ Report available at: allure-report/index.html"
+	@echo "ℹ Starting server for immediate viewing..."
+	@$(MAKE) serve-report
 
 # Serve allure report (assumes allure is always running)
 serve-report:

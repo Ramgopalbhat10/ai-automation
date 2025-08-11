@@ -11,7 +11,7 @@ class OpenAIProvider(LLMProvider):
         super().__init__(config)
         self.base_url = config.get("llm.openai.base_url") # For custom endpoints
         self.api_key = config.get("llm.openai.api_key") or os.getenv("OPENAI_API_KEY")
-        self.model_name = config.get("llm.openai.model", "meta-llama/llama-4-scout:throughput")
+        self.model_name = config.get("llm.openai.model", "meta-llama/llama-4-scout:floor")
         self.temperature = config.get("llm.openai.temperature", 0.1)
         
     def get_llm(self):

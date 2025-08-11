@@ -48,7 +48,7 @@ class YamlTestSuiteAdapter:
         """Load and validate YAML test suite"""
         self.test_suite = YAMLLoader.load_test_suite(self.yaml_file_path)
         return self.test_suite
-    
+
     def setup_test_engine(self):
         """Initialize test engine components"""
         # Load configuration
@@ -76,7 +76,7 @@ class YamlTestSuiteAdapter:
                 base_url=self.test_suite.base_url,
                 total_tests=len(self.test_suite.tests)
             )
-    
+
     async def execute_test_case(self, test_case) -> TestResult:
         """Execute a single test case and return results"""
         test_name = test_case.name
@@ -131,6 +131,19 @@ class YamlTestSuiteAdapter:
             return result
 
 
+class StableYamlParam:
+    """Stable wrapper to make pytest param representation deterministic for Allure history"""
+    def __init__(self, adapter: YamlTestSuiteAdapter, case):
+        self.adapter = adapter
+        self.case = case
+    
+    def __repr__(self) -> str:
+        # Only return test case name for stable param id string
+        return f"{self.case.name}"
+    
+    __str__ = __repr__
+
+
 def pytest_generate_tests(metafunc):
     """Dynamically generate test cases from YAML files"""
     if "yaml_test_case" in metafunc.fixturenames:
@@ -166,12 +179,13 @@ def pytest_generate_tests(metafunc):
         suite_name = test_suite.name if test_suite.name else Path(yaml_file).stem
         environment = _extract_environment_from_path(yaml_file)
         
-        # Create descriptive test IDs that include suite and environment info
-        test_ids = [f"[{environment}][{suite_name}] {case.name}" for case in test_cases]
+        # Create stable test IDs for consistent Allure historyId
+        # Use only the test case name to ensure consistency across runs
+        test_ids = [case.name for case in test_cases]
         
         metafunc.parametrize(
             "yaml_test_case",
-            [(adapter, case) for case in test_cases],
+            [StableYamlParam(adapter, case) for case in test_cases],
             ids=test_ids
         )
 
@@ -189,7 +203,8 @@ def event_loop():
 @pytest.mark.yaml_suite
 async def test_yaml_test_case(yaml_test_case):
     """Execute a YAML test case"""
-    adapter, test_case = yaml_test_case
+    param: StableYamlParam = yaml_test_case
+    adapter, test_case = param.adapter, param.case
     
     # Setup test engine
     adapter.setup_test_engine()
@@ -199,31 +214,30 @@ async def test_yaml_test_case(yaml_test_case):
     suite_description = adapter.test_suite.description if adapter.test_suite else ""
     base_url = adapter.test_suite.base_url if adapter.test_suite else ""
     
-    # Add comprehensive allure metadata with proper suite hierarchy
-    # Override pytest's default suite structure
+    # Add stable allure metadata for consistent historyId
     environment = _extract_environment_from_path(adapter.yaml_file_path)
-    allure.dynamic.parent_suite(f"{environment.title()} Environment")  # Top level: Environment
-    allure.dynamic.suite(suite_name)  # Suite level: Test Suite Name
-    allure.dynamic.sub_suite(test_case.name)  # Sub-suite level: Test Case
     
-    # Keep epic/feature/story for additional categorization
-    allure.dynamic.epic(suite_name)  # Epic grouping by test suite
-    allure.dynamic.feature(f"Test Suite: {suite_name}")  # Feature level grouping
-    allure.dynamic.story(test_case.name)  # Individual test case
-    allure.dynamic.title(f"[{environment}][{suite_name}] {test_case.name}")
+    # Use stable hierarchy for consistent historyId
+    allure.dynamic.parent_suite(f"{environment.title()} Environment")
+    allure.dynamic.suite(suite_name)
+    allure.dynamic.sub_suite("Test Cases")  # Static sub-suite name
     
-    # Add suite description and metadata
-    if suite_description:
-        allure.dynamic.description(f"Suite: {suite_description}\n\nTest: {test_case.description or ''}")
+    # Use static categorization
+    allure.dynamic.epic(suite_name)
+    allure.dynamic.feature("YAML Test Suite")  # Static feature name
+    allure.dynamic.story(test_case.name)
+    allure.dynamic.title(test_case.name)  # Simple, stable title
     
-    # Add environment information
+    # Add description without dynamic elements
+    if test_case.description:
+        allure.dynamic.description(test_case.description)
+    
+    # Add static tags that don't change between runs
     if base_url:
-        allure.dynamic.tag(f"base_url:{base_url}")
+        allure.dynamic.tag("web-test")
     
-    # Add suite-specific tags
-    suite_file_name = Path(adapter.yaml_file_path).stem
-    allure.dynamic.tag(f"suite:{suite_file_name}")
-    allure.dynamic.tag(f"environment:{_extract_environment_from_path(adapter.yaml_file_path)}")
+    allure.dynamic.tag(f"suite:{Path(adapter.yaml_file_path).stem}")
+    allure.dynamic.tag(f"environment:{environment}")
     
     # Execute test case
     result = await adapter.execute_test_case(test_case)
