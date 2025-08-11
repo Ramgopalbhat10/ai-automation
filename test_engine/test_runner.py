@@ -190,8 +190,11 @@ class TestRunner:
                     if screenshot:
                         screenshots.append(screenshot)
                 
+                # Check if the agent actually succeeded
+                agent_success = self._evaluate_agent_success(result, test_case)
+                
                 return {
-                    "success": True,
+                    "success": agent_success,
                     "output": str(result),
                     "screenshots": screenshots,
                     "retry_count": attempt
@@ -210,6 +213,45 @@ class TestRunner:
             "error": last_error,
             "retry_count": test_case.retry_count
         }
+    
+    def _evaluate_agent_success(self, result: Any, test_case: TestCase) -> bool:
+        """Evaluate if the agent actually succeeded in completing the task
+        
+        Args:
+            result: Agent execution result
+            test_case: Test case configuration
+            
+        Returns:
+            True if agent succeeded, False otherwise
+        """
+        result_str = str(result).lower()
+        
+        # Check for explicit failure indicators
+        failure_indicators = [
+            "task completed without success",
+            "404 error",
+            "failed to",
+            "error occurred",
+            "unable to",
+            "could not",
+            "timeout",
+            "exception"
+        ]
+        
+        for indicator in failure_indicators:
+            if indicator in result_str:
+                return False
+        
+        # Check if result contains the agent's history and look for done=True
+        if hasattr(result, 'all_results') and result.all_results:
+            # Look for successful completion in the last action
+            last_result = result.all_results[-1] if result.all_results else None
+            if last_result and hasattr(last_result, 'is_done'):
+                return last_result.is_done
+        
+        # If no clear failure indicators and no explicit success markers,
+        # assume success (maintains backward compatibility)
+        return True
     
     def _resolve_test_url(self, url: str) -> str:
         """Resolve test URL using configuration

@@ -42,6 +42,14 @@ class TestEngine:
         print(f"Starting test suite: {test_suite.name}")
         start_time = datetime.now()
         
+        # Set test suite information in result collector
+        self.result_collector.set_test_suite_info(
+            test_suite_name=test_suite.name,
+            test_suite_description=test_suite.description,
+            base_url=test_suite.base_url,
+            total_tests=len(test_suite.tests)
+        )
+        
         # Setup phase
         if test_suite.setup_prompt:
             await self._execute_setup(test_suite.setup_prompt)
