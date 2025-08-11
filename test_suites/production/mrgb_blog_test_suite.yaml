@@ -1,0 +1,104 @@
+# Production Test Suite for MRGB Blog Site
+# Tests the main functionality of https://mrgb.in including home page, blog, and work sections
+# Uses sequential navigation within a single browser session for comprehensive testing
+
+name: "MRGB Blog Production Test Suite"
+description: "Comprehensive sequential testing of mrgb.in blog site functionality including navigation, content verification, and user experience"
+
+# Test execution settings
+parallel: false
+max_workers: 1
+fail_fast: false
+
+# Default configurations
+default_browser:
+  type: "chromium"
+  headless: false
+  viewport:
+    width: 1920
+    height: 1080
+  timeout: 30000
+  keep_alive: true  # Keep browser alive for multiple tabs
+
+default_llm_provider: "openai"
+base_url: "https://mrgb.in"
+
+# Global variables
+variables:
+  site_title: "MRGB"
+  expected_blog_count: 2
+  navigation_timeout: 15
+
+# Setup and teardown
+setup_prompt: "Open the browser and navigate to https://mrgb.in. Wait for the page to fully load. Accept any cookie banners or popups if they appear. Verify the site loads correctly and is ready for testing."
+teardown_prompt: "Clear any temporary data and ensure the browser is in a clean state for the next test run."
+
+# Test cases
+tests:
+  - name: "Homepage Load and Basic Elements"
+    description: "Verify the homepage loads correctly with all essential elements"
+    prompt: |
+      1. Verify site title 'MRGB' is visible in header
+      2. Check main greeting 'Hi, I'm Ram' with waving hand emoji
+      3. Confirm 'Fullstack developer' description is present
+      4. Locate 'Latest posts' section
+      5. Locate 'Work Experience' section
+      6. Verify navigation links 'blog' and 'work' exist in header
+    success_criteria: "All 6 essential homepage elements are visible and properly displayed"
+    url: "/"
+    timeout: 240
+    retry_count: 0
+    tags: ["homepage", "smoke", "layout"]
+    
+  - name: "Blog Section Complete Verification"
+    description: "Test blog section navigation, content display, and individual post functionality"
+    prompt: |
+      1. Navigate to /blog page
+      2. Verify exactly 2 blog posts are displayed
+      3. Confirm 'Setup a new GCP VM' article title is visible
+      4. Confirm 'Setup a virtual environment in Python' article title is visible
+      5. Click 'Setup a new GCP VM' post link
+      6. Verify article content loads with proper formatting
+      7. Use browser back button to return to blog list
+      8. Click 'Setup a virtual environment in Python' post link
+      9. Verify article content loads with proper formatting
+    success_criteria: "Blog page displays 2 articles, individual posts open correctly with readable content, and navigation works"
+    url: "/blog"
+    timeout: 240
+    retry_count: 0
+    tags: ["blog", "navigation", "content"]
+    
+  - name: "Work Experience Section Verification"
+    description: "Test navigation to work section and verify work experience content"
+    prompt: |
+      1. Navigate to /work page
+      2. Locate 'Carelon Global Solutions' company name
+      3. Verify 'Senior Software Engineer' job title
+      4. Check 'Aug2021 - Current' duration
+      5. Confirm job description contains 'Enterprise AI search'
+    success_criteria: "Work page displays correct current position details at Carelon Global Solutions"
+    url: "/work"
+    timeout: 240
+    retry_count: 0
+    tags: ["work", "navigation", "professional"]
+    
+  - name: "Cross-Section Navigation Flow"
+    description: "Test seamless navigation between different sections of the site"
+    prompt: |
+      1. Start at homepage (/)
+      2. Click 'blog' navigation link
+      3. Verify /blog page loads
+      4. Click 'work' navigation link
+      5. Verify /work page loads
+      6. Click 'MRGB' logo to return to homepage
+      7. Verify homepage loads
+    success_criteria: "All navigation links work and pages load correctly in sequence"
+    url: "/"
+    timeout: 240
+    retry_count: 0
+    tags: ["navigation", "multi-tab", "integration"]
+
+# Reporting configuration
+report_format: ["html", "json"]
+report_title: "MRGB Blog Site Production Test Report"
+report_description: "Comprehensive test results for mrgb.in blog site functionality and user experience"

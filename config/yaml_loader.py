@@ -2,11 +2,11 @@
 """Simplified YAML loader for prompt-based test configurations"""
 
 import yaml
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from pathlib import Path
 from .yaml_schema import (
-    TestSuite, TestCase, BrowserConfig, 
-    YAMLSchemaValidator, BrowserType, Environment
+    TestSuite, TestCase, BrowserConfig,
+    YAMLSchemaValidator, BrowserType
 )
 
 
@@ -119,7 +119,7 @@ class YAMLLoader:
             parallel=data.get('parallel', False),
             max_workers=data.get('max_workers', 2),
             fail_fast=data.get('fail_fast', False),
-            default_environment=Environment(data.get('default_environment', 'development')),
+
             default_browser=default_browser,
             default_llm_provider=data.get('default_llm_provider', 'google'),
             default_llm_model=data.get('default_llm_model'),
@@ -154,10 +154,11 @@ class YAMLLoader:
             success_criteria=test_data.get('success_criteria', ''),
             description=test_data.get('description', ''),
             url=test_data.get('url', ''),
-            timeout=test_data.get('timeout', 60),
+            timeout=test_data.get('timeout', 120),
             retry_count=test_data.get('retry_count', 1),
             tags=test_data.get('tags', []),
-            environment=Environment(test_data.get('environment', suite_data.get('default_environment', 'development'))),
+            environment=test_data.get('environment', 'production'),
+
             browser=browser,
             llm_provider=test_data.get('llm_provider', suite_data.get('default_llm_provider', 'google')),
             llm_model=test_data.get('llm_model', suite_data.get('default_llm_model')),
@@ -196,7 +197,7 @@ class YAMLLoader:
             'parallel': test_suite.parallel,
             'max_workers': test_suite.max_workers,
             'fail_fast': test_suite.fail_fast,
-            'default_environment': test_suite.default_environment.value,
+
             'default_browser': {
                 'type': test_suite.default_browser.type.value,
                 'headless': test_suite.default_browser.headless,
@@ -219,7 +220,7 @@ class YAMLLoader:
                     'timeout': test.timeout,
                     'retry_count': test.retry_count,
                     'tags': test.tags,
-                    'environment': test.environment.value,
+
                     'browser': {
                         'type': test.browser.type.value,
                         'headless': test.browser.headless,

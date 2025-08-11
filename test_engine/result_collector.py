@@ -52,6 +52,7 @@ class ResultCollector:
     
     def __init__(self):
         self._results: List[TestResult] = []
+        self._test_suite_info: Dict[str, Any] = {}
     
     def add_result(self, result: TestResult):
         """Add a test result
@@ -60,6 +61,23 @@ class ResultCollector:
             result: Test result to add
         """
         self._results.append(result)
+    
+    def set_test_suite_info(self, test_suite_name: str, test_suite_description: str = None, 
+                           base_url: str = None, total_tests: int = None):
+        """Set test suite information for reports
+        
+        Args:
+            test_suite_name: Name of the test suite
+            test_suite_description: Description of the test suite
+            base_url: Base URL being tested
+            total_tests: Total number of tests in the suite
+        """
+        self._test_suite_info = {
+            "name": test_suite_name,
+            "description": test_suite_description,
+            "base_url": base_url,
+            "total_tests": total_tests
+        }
     
     def get_all_results(self) -> List[TestResult]:
         """Get all test results
@@ -124,6 +142,7 @@ class ResultCollector:
             "suite_name": suite_name,
             "execution_time": datetime.now().isoformat(),
             "total_duration": duration,
+            "test_suite_info": self._test_suite_info,
             "statistics": {
                 "total_tests": total_tests,
                 "passed": passed_tests,
@@ -210,6 +229,117 @@ class ResultCollector:
         
         return file_path
     
+    def export_to_markdown(self, file_path: str) -> str:
+        """Export results to Markdown report
+        
+        Args:
+            file_path: Output file path
+            
+        Returns:
+            Path to exported file
+        """
+        # Generate summary
+        total_duration = sum(r.duration for r in self._results)
+        summary = self.generate_summary("Markdown Report", self._results, total_duration)
+        
+        # Create Markdown content
+        markdown_content = self._generate_markdown_report(summary, self._results)
+        
+        # Ensure directory exists
+        Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+        
+        # Write to file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(markdown_content)
+        
+        return file_path
+    
+    def _generate_markdown_report(self, summary: Dict[str, Any], results: List[TestResult]) -> str:
+        """Generate Markdown report content
+        
+        Args:
+            summary: Test summary data
+            results: List of test results
+            
+        Returns:
+            Markdown content string
+        """
+        stats = summary['statistics']
+        
+        test_suite_info = summary.get('test_suite_info', {})
+        
+        markdown = f"""# BrowserTest AI - Test Report
+
+**Generated on:** {summary['execution_time']}  
+**Total Duration:** {summary['total_duration']:.2f} seconds
+
+## Test Suite Information
+
+| Property | Value |
+|----------|-------|
+| Test Suite Name | {test_suite_info.get('name', 'N/A')} |
+| Description | {test_suite_info.get('description', 'N/A')} |
+| Base URL | {test_suite_info.get('base_url', 'N/A')} |
+| Total Tests Configured | {test_suite_info.get('total_tests', 'N/A')} |
+
+## Summary Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | {stats['total_tests']} |
+| Passed | {stats['passed']} |
+| Failed | {stats['failed']} |
+| Errors | {stats['errors']} |
+| Skipped | {stats['skipped']} |
+| Success Rate | {stats['success_rate']:.1f}% |
+
+## Test Results
+
+"""
+        
+        for result in results:
+            status_emoji = {
+                'passed': '✅',
+                'failed': '❌',
+                'error': '⚠️',
+                'skipped': '⏭️'
+            }.get(result.status, '❓')
+            
+            markdown += f"""### {status_emoji} {result.test_name}
+
+**Status:** {result.status.upper()}  
+**Duration:** {result.duration:.2f}s  
+**Start Time:** {result.start_time.strftime('%Y-%m-%d %H:%M:%S')}  
+**End Time:** {result.end_time.strftime('%Y-%m-%d %H:%M:%S')}
+
+"""
+            
+            if result.error_message:
+                markdown += f"""**Error Message:**
+```
+{result.error_message}
+```
+
+"""
+            
+            if result.output:
+                markdown += f"""**Output:**
+```
+{result.output[:500]}{'...' if len(result.output) > 500 else ''}
+```
+
+"""
+            
+            if result.screenshots:
+                markdown += "**Screenshots:**\n"
+                for screenshot in result.screenshots:
+                    markdown += f"- {screenshot}\n"
+                markdown += "\n"
+            
+            markdown += "---\n\n"
+        
+        return markdown
+    
     def _generate_html_report(self, summary: Dict[str, Any], results: List[TestResult]) -> str:
         """Generate HTML report content
         
@@ -222,6 +352,8 @@ class ResultCollector:
         """
         stats = summary['statistics']
         
+        test_suite_info = summary.get('test_suite_info', {})
+        
         html = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -233,6 +365,12 @@ class ResultCollector:
         body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}
         .container {{ max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
         .header {{ text-align: center; margin-bottom: 30px; }}
+        .suite-info {{ background: #e9ecef; padding: 20px; border-radius: 8px; margin-bottom: 30px; }}
+        .suite-info h3 {{ margin-top: 0; color: #495057; }}
+        .suite-info-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }}
+        .suite-info-item {{ background: white; padding: 15px; border-radius: 4px; border-left: 4px solid #007bff; }}
+        .suite-info-label {{ font-weight: bold; color: #495057; margin-bottom: 5px; }}
+        .suite-info-value {{ color: #6c757d; }}
         .stats {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }}
         .stat-card {{ background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; }}
         .stat-value {{ font-size: 2em; font-weight: bold; margin-bottom: 5px; }}
@@ -259,6 +397,28 @@ class ResultCollector:
             <h1>BrowserTest AI - Test Report</h1>
             <p>Generated on {summary['execution_time']}</p>
             <p>Total Duration: {summary['total_duration']:.2f} seconds</p>
+        </div>
+        
+        <div class="suite-info">
+            <h3>Test Suite Information</h3>
+            <div class="suite-info-grid">
+                <div class="suite-info-item">
+                    <div class="suite-info-label">Test Suite Name</div>
+                    <div class="suite-info-value">{test_suite_info.get('name', 'N/A')}</div>
+                </div>
+                <div class="suite-info-item">
+                    <div class="suite-info-label">Description</div>
+                    <div class="suite-info-value">{test_suite_info.get('description', 'N/A')}</div>
+                </div>
+                <div class="suite-info-item">
+                    <div class="suite-info-label">Base URL</div>
+                    <div class="suite-info-value">{test_suite_info.get('base_url', 'N/A')}</div>
+                </div>
+                <div class="suite-info-item">
+                    <div class="suite-info-label">Total Tests Configured</div>
+                    <div class="suite-info-value">{test_suite_info.get('total_tests', 'N/A')}</div>
+                </div>
+            </div>
         </div>
         
         <div class="stats">

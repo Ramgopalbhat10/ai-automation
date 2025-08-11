@@ -33,6 +33,7 @@ class Config:
                 "provider": os.getenv("LLM_PROVIDER", "google"),
                 "google_api_key": os.getenv("GOOGLE_API_KEY"),
                 "openai_api_key": os.getenv("OPENAI_API_KEY"),
+                "openai_base_url": os.getenv("OPENAI_BASE_URL"),
                 "model": os.getenv("LLM_MODEL", "gemini-2.0-flash-exp"),
             },
             "browser": {
@@ -51,10 +52,7 @@ class Config:
                 "format": os.getenv("REPORT_FORMAT", "html,json"),
                 "screenshots": os.getenv("SCREENSHOTS", "true").lower() == "true",
             },
-            "environment": {
-                "current": os.getenv("ENVIRONMENT", "development"),
-                "base_url": os.getenv("BASE_URL"),
-            }
+            "base_url": os.getenv("BASE_URL")
         })
     
     def _load_config_file(self, config_file: str):

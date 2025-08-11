@@ -7,7 +7,6 @@ from browser_use import Agent
 
 from config import Config
 from config.yaml_loader import TestCase
-from config.environment import EnvironmentManager
 from llm_integration.llm_provider import LLMProvider
 from llm_integration.browser_use_integration import BrowserUseIntegration
 from browser_manager import BrowserManager
@@ -21,8 +20,7 @@ class TestRunner:
         self,
         config: Config,
         llm_provider: LLMProvider,
-        browser_manager: BrowserManager,
-        environment_manager: EnvironmentManager
+        browser_manager: BrowserManager
     ):
         """Initialize test runner
         
@@ -30,12 +28,10 @@ class TestRunner:
             config: Application configuration
             llm_provider: LLM provider instance
             browser_manager: Browser manager instance
-            environment_manager: Environment manager instance
         """
         self.config = config
         self.llm_provider = llm_provider
         self.browser_manager = browser_manager
-        self.environment_manager = environment_manager
         self.browser_use_integration = BrowserUseIntegration(config, llm_provider)
     
     async def run_test(self, test_case: TestCase) -> TestResult:
@@ -51,10 +47,7 @@ class TestRunner:
         
         try:
             # Set environment for this test
-            if test_case.environment:
-                # Convert Environment enum to string value
-                env_name = test_case.environment.value if hasattr(test_case.environment, 'value') else str(test_case.environment)
-                self.environment_manager.set_current_environment(env_name)
+
             
             # Create LLM provider for this test case if specified
             test_llm_provider = self._get_test_llm_provider(test_case)
@@ -164,15 +157,12 @@ class TestRunner:
                 # Configure agent settings
                 agent_config = {
                     "use_vision": self.config.get("agent.use_vision", True),
-                    "max_steps": test_case.timeout or self.config.get("agent.max_steps", 50),
+                    "max_steps": test_case.max_actions or self.config.get("agent.max_steps", 50),
                     "save_conversation_path": self.config.get("agent.save_conversation_path")
                 }
                 
-                # Add sensitive data if configured for this environment
-                if test_case.environment:
-                    sensitive_data = self._get_sensitive_data(test_case.environment)
-                    if sensitive_data:
-                        agent_config["sensitive_data"] = sensitive_data
+                # Note: Sensitive data handling can be added here if needed
+                # For now, we skip sensitive data configuration
                 
                 # Use test-specific LLM provider if available
                 integration_to_use = self.browser_use_integration
@@ -200,8 +190,11 @@ class TestRunner:
                     if screenshot:
                         screenshots.append(screenshot)
                 
+                # Check if the agent actually succeeded
+                agent_success = self._evaluate_agent_success(result, test_case)
+                
                 return {
-                    "success": True,
+                    "success": agent_success,
                     "output": str(result),
                     "screenshots": screenshots,
                     "retry_count": attempt
@@ -221,43 +214,68 @@ class TestRunner:
             "retry_count": test_case.retry_count
         }
     
-    def _resolve_test_url(self, url: str) -> str:
-        """Resolve test URL using environment manager
+    def _evaluate_agent_success(self, result: Any, test_case: TestCase) -> bool:
+        """Evaluate if the agent actually succeeded in completing the task
         
         Args:
-            url: URL path or full URL
+            result: Agent execution result
+            test_case: Test case configuration
             
         Returns:
-            Resolved full URL
+            True if agent succeeded, False otherwise
+        """
+        result_str = str(result).lower()
+        
+        # Check for explicit failure indicators
+        failure_indicators = [
+            "task completed without success",
+            "404 error",
+            "failed to",
+            "error occurred",
+            "unable to",
+            "could not",
+            "timeout",
+            "exception"
+        ]
+        
+        for indicator in failure_indicators:
+            if indicator in result_str:
+                return False
+        
+        # Check if result contains the agent's history and look for done=True
+        if hasattr(result, 'all_results') and result.all_results:
+            # Look for successful completion in the last action
+            last_result = result.all_results[-1] if result.all_results else None
+            if last_result and hasattr(last_result, 'is_done'):
+                return last_result.is_done
+        
+        # If no clear failure indicators and no explicit success markers,
+        # assume success (maintains backward compatibility)
+        return True
+    
+    def _resolve_test_url(self, url: str) -> str:
+        """Resolve test URL using configuration
+        
+        Args:
+            url: URL to resolve
+            
+        Returns:
+            Resolved URL
         """
         if not url:
             return ""
         
-        # If it's already a full URL, return as-is
+        # Return absolute URLs as-is
         if url.startswith(('http://', 'https://')):
             return url
         
-        # Resolve using environment manager
-        try:
-            return self.environment_manager.resolve_url(url)
-        except ValueError:
-            # Fallback to base URL from config
-            base_url = self.config.get("environment.base_url", "")
-            if base_url:
-                return f"{base_url.rstrip('/')}/{url.lstrip('/')}"
-            return url
+        # Use base URL from config for relative URLs
+        base_url = self.config.get("base_url", "")
+        if base_url:
+            return f"{base_url.rstrip('/')}/{url.lstrip('/')}"
+        return url
     
-    def _get_sensitive_data(self, environment: str) -> Optional[Dict[str, Dict[str, str]]]:
-        """Get sensitive data configuration for environment
-        
-        Args:
-            environment: Environment name
-            
-        Returns:
-            Sensitive data configuration or None
-        """
-        env = self.environment_manager.get_environment(environment)
-        return env.credentials if env else None
+
     
     async def _capture_screenshot_from_agent(self) -> Optional[str]:
         """Capture screenshot using current agent
