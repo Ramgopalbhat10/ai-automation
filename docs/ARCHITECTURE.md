@@ -48,6 +48,17 @@ BrowserTest AI is a modular, intelligent browser automation testing framework th
 │  └─────────────┘                                                │
 │                                                                 │
 ├─────────────────────────────────────────────────────────────────┤
+│                   Testing Infrastructure                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐          │
+│  │   Pytest    │    │   Allure    │    │Cross-Platform│          │
+│  │  Framework  │    │  Reporting  │    │   Scripts   │          │
+│  │ • Fixtures  │    │ • Reports   │    │ • run_tests │          │
+│  │ • Plugins   │    │ • History   │    │ • Makefile  │          │
+│  └─────────────┘    └─────────────┘    └─────────────┘          │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
 │                    External Dependencies                        │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
@@ -398,6 +409,12 @@ report_format: ["html", "json"]
    echo "LLM_PROVIDER=google" >> .env
    ```
 
+4. **Testing Infrastructure**:
+   - **Pytest Framework**: Modern testing framework with fixtures and plugins
+   - **Allure Reporting**: Advanced test reporting with rich visualizations
+   - **Cross-Platform Scripts**: Unix/Linux/Windows compatible test execution
+   - **Makefile Support**: Simplified command execution for development workflows
+
 ### Execution Methods
 
 #### 1. Direct Script Execution
@@ -416,7 +433,38 @@ python scripts/website_tester.py
 python scripts/test_amazon_e2e.py
 ```
 
-#### 2. Test Engine Usage
+#### 2. Universal CLI (Recommended)
+
+```bash
+python main.py run test_suites/examples/example_test_suite.yaml
+python main.py validate test_suites/examples/example_test_suite.yaml
+```
+
+#### 3. Pytest Integration
+
+```bash
+# Run all tests with Allure reporting
+pytest --alluredir=reports/allure-results
+
+# Run specific test suites
+pytest tests/test_yaml_suites.py::test_example_suite
+
+# Cross-platform execution scripts
+./run_tests.sh all-tests        # Unix/Linux/Git Bash
+run_tests.bat all-tests         # Windows
+```
+
+#### 4. Makefile Commands
+
+```bash
+make install     # Install dependencies
+make test        # Run all tests
+make test-unit   # Run unit tests only
+make clean       # Clean reports
+make report      # Generate and serve Allure report
+```
+
+#### 5. Test Engine Usage
 
 ```python
 import asyncio

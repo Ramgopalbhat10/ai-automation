@@ -1,0 +1,1 @@
+"""Test package for BrowserTest AI with pytest and allure integration"""

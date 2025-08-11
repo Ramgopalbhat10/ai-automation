@@ -160,6 +160,38 @@ default_browser:
   keep_alive: true  # Enables multi-tab support
 ```
 
+### Pytest Integration
+The Universal CLI now integrates seamlessly with pytest for enhanced testing capabilities:
+
+```bash
+# Run tests through pytest with Allure reporting
+pytest --alluredir=reports/allure-results
+
+# Run specific test categories
+pytest tests/test_yaml_suites.py -k "integration"
+pytest tests/test_browser.py -k "chrome"
+
+# Cross-platform execution scripts
+./run_tests.sh all-tests        # Unix/Linux/Git Bash
+run_tests.bat all-tests         # Windows
+
+# Available test commands (14 total)
+./run_tests.sh list-commands    # See all available commands
+```
+
+### Makefile Integration
+Simplified development workflow with make commands:
+
+```bash
+make install     # Install dependencies
+make test        # Run all tests with Allure
+make test-unit   # Run unit tests only
+make test-integration  # Run integration tests
+make clean       # Clean reports and cache
+make report      # Generate and serve Allure report
+make list-suites # List available test suites
+```
+
 ### Environment Integration
 
 The CLI respects environment variables and can be easily integrated into CI/CD pipelines:

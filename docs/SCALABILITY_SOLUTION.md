@@ -44,13 +44,17 @@ class MRGBTestRunner:
 python scripts/run_mrgb_tests.py
 ```
 
-## The Solution: Universal CLI ✅
+## The Solution: Universal CLI + Testing Infrastructure ✅
 
-### After: One CLI for All Test Suites
+### After: One CLI for All Test Suites + Modern Testing Framework
 
 ```
 main.py                    # Universal CLI entry point
 __main__.py               # Module entry point
+pytest.ini                # Pytest configuration
+Makefile                  # Cross-platform commands
+run_tests.sh              # Unix/Linux/Git Bash scripts
+run_tests.bat             # Windows scripts
 test_suites/
 ├── examples/
 │   ├── amazon_test_suite.yaml
@@ -59,6 +63,14 @@ test_suites/
 │   └── mrgb_blog_test_suite.yaml
 └── staging/
     └── staging_test_suite.yaml
+tests/
+├── test_yaml_suites.py   # Pytest integration for YAML suites
+├── test_browser.py       # Browser automation tests
+├── test_integration.py   # Integration tests
+└── test_unit.py          # Unit tests
+reports/
+├── allure-results/       # Allure test results
+└── allure-report/        # Generated HTML reports
 ```
 
 **Benefits of this approach:**
@@ -67,21 +79,36 @@ test_suites/
 - ✅ **Perfect Scalability**: Adding 1000 test suites = 0 new scripts
 - ✅ **Consistent Interface**: Same commands and options for all
 - ✅ **Clear Organization**: YAML files organized by environment
+- ✅ **Modern Testing Framework**: Pytest integration with fixtures and plugins
+- ✅ **Rich Reporting**: Allure reports with history, trends, and screenshots
+- ✅ **Cross-Platform Execution**: Works on Unix/Linux/Windows with same commands
+- ✅ **CI/CD Ready**: Standardized test execution for automation pipelines
 
 ### Example: MRGB Test Suite (New Approach)
 
 ```bash
-# Just run the YAML file directly - no custom script needed!
+# Universal CLI - run YAML file directly
 python main.py run test_suites/production/mrgb_blog_test_suite.yaml
 
 # With configuration overrides
 python main.py run test_suites/production/mrgb_blog_test_suite.yaml --parallel --workers 3
+
+# Pytest integration with Allure reporting
+pytest tests/test_yaml_suites.py::test_mrgb_blog_suite --alluredir=reports/allure-results
+
+# Cross-platform execution scripts
+./run_tests.sh yaml-suite test_suites/production/mrgb_blog_test_suite.yaml  # Unix/Linux
+run_tests.bat yaml-suite test_suites/production/mrgb_blog_test_suite.yaml   # Windows
+
+# Makefile commands
+make test-yaml SUITE=test_suites/production/mrgb_blog_test_suite.yaml
+make report  # Generate and serve Allure report
 ```
 
 ## Comparison: Before vs After
 
-| Aspect | Before (Custom Scripts) | After (Universal CLI) |
-|--------|------------------------|------------------------|
+| Aspect | Before (Custom Scripts) | After (Universal CLI + Testing Infrastructure) |
+|--------|------------------------|------------------------------------------------|
 | **Scripts Needed** | 1 per test suite | 1 for all test suites |
 | **Code Duplication** | High (repeated logic) | None (shared logic) |
 | **Maintenance** | Update multiple files | Update one file |
@@ -92,6 +119,11 @@ python main.py run test_suites/production/mrgb_blog_test_suite.yaml --parallel -
 | **Validation** | Manual per script | Built-in for all |
 | **Templates** | Manual creation | Auto-generation |
 | **Discovery** | Manual documentation | Auto-discovery |
+| **Testing Framework** | Custom/inconsistent | Pytest with fixtures |
+| **Reporting** | Basic/none | Rich Allure reports |
+| **Cross-Platform** | Manual adaptation | Native support |
+| **CI/CD Integration** | Complex setup | Standardized commands |
+| **Test Categories** | Mixed/unclear | Organized (unit/integration/browser) |
 
 ## Real-World Example: Adding a New Test Suite
 
